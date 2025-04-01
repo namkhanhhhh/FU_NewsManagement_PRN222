@@ -1,0 +1,141 @@
+﻿@model AS1_HE180034_PRN222.Models.Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    .dashboard-container {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.03);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+    .btn-primary {
+        background: #4f46e5;
+        border: none;
+        border-radius: 10px;
+        padding: 0.8rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+    .btn-secondary {
+        background: #64748b;
+        border: none;
+        border-radius: 10px;
+        padding: 0.8rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-1px);
+        }
+
+    .form-check-input {
+        margin-top: 0.3rem;
+    }
+
+    .form-check-label {
+        margin-left: 0.5rem;
+    }
+
+    .alert-success {
+        background: #dcfce7;
+        color: #166534;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h4><i class="fa-solid fa-pen-to-square"></i> Edit Category</h4>
+        </div>
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-action="EditCategory" method="post">
+                <input type="hidden" asp-for="CategoryId" />
+
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="form-label">Category Name</label>
+                    <input asp-for="CategoryName" class="form-control" required />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryDesciption" class="form-label">Description</label>
+                    <textarea asp-for="CategoryDesciption" class="form-control" rows="3" required></textarea>
+                    <span asp-validation-for="CategoryDesciption" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentCategoryId" class="form-label">Parent Category</label>
+                    <select asp-for="ParentCategoryId" class="form-select">
+                        <option value="">-- Select parent category (if any) --</option>
+                        @if (ViewBag.Categories != null && ViewBag.Categories is List<SelectListItem>)
+                        {
+                            foreach (var item in ViewBag.Categories as List<SelectListItem>)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                    <label asp-for="IsActive" class="form-check-label">Active</label>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="CategoryManagement" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

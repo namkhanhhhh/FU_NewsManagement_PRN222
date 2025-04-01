@@ -1,0 +1,153 @@
+﻿@model List<AS1_HE180034_PRN222.Models.NewsArticle>
+@{
+    ViewData["Title"] = "News Report";
+}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<style>
+    .container-fluid {
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+    .form-label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        color: #856404;
+    }
+
+    .table-responsive {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background-color: #0d6efd;
+        color: #ffffff;
+        border: none;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+        border-color: #dee2e6;
+    }
+
+    .badge {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+
+        .badge.bg-success {
+            background-color: #198754;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545;
+        }
+
+    .fs-7 {
+        font-size: 0.875rem;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <h2 class="text-center mb-4">News Report</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-action="AccountManagement" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+    <!-- Form nhập StartDate và EndDate -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label class="form-label">Start Date:</label>
+            <input type="date" name="startDate" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">End Date:</label>
+            <input type="date" name="endDate" class="form-control" required />
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Generate Report</button>
+        </div>
+    </form>
+    <!-- Thông báo khi không có dữ liệu -->
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            <strong>⚠️ @ViewBag.Message</strong>
+        </div>
+    }
+    else if (Model.Count > 0)
+    {
+        <!-- Bảng hiển thị dữ liệu -->
+        <div class="table-responsive p-3">
+            <table class="table table-striped table-hover w-100 fs-7">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Title</th>
+                        <th>Headline</th>
+                        <th>Created Date</th>
+                        <th>Source</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center align-middle">
+                    @foreach (var news in Model)
+                    {
+                        <tr>
+                            <td class="p-2">@news.NewsTitle</td>
+                            <td class="p-2">@news.Headline</td>
+                            <td class="p-2">
+                                @(news.CreatedDate.HasValue
+                                    ? news.CreatedDate.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                                    : "N/A")
+                            </td>
+                            <td class="p-2">@news.NewsSource</td>
+                            <td class="p-2">@news.CategoryId</td>
+                            <td class="p-2">
+                                <span class="badge @(news.NewsStatus == true ? "bg-success" : "bg-danger") fs-6 p-2">
+                                    @(news.NewsStatus == true ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

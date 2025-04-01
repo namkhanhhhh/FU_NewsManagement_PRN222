@@ -1,0 +1,378 @@
+﻿@model AS1_HE180034_PRN222.Models.NewsArticle
+@{
+    ViewData["Title"] = "Edit News Article";
+}
+
+<div class="edit-article-wrapper">
+    <div class="edit-header">
+        <div class="header-content">
+            <h2>Edit News Article</h2>
+            <p>Update existing article information</p>
+        </div>
+    </div>
+    
+    <div class="edit-form-container">
+        <form asp-action="EditNewsArticleList" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="NewsArticleId" />
+            
+            <div class="form-panels">
+                <!-- Left Panel -->
+                <div class="panel content-panel">
+                    <div class="panel-header">
+                        <span class="header-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </span>
+                        <h3>Content</h3>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <!-- Title -->
+                        <div class="form-field">
+                            <label asp-for="NewsTitle">Title <span class="required-field">*</span></label>
+                            <input asp-for="NewsTitle" class="input-control" required />
+                            <span asp-validation-for="NewsTitle" class="error-message"></span>
+                        </div>
+                        
+                        <!-- Headline -->
+                        <div class="form-field">
+                            <label asp-for="Headline">Headline <span class="required-field">*</span></label>
+                            <input asp-for="Headline" class="input-control" required />
+                            <span asp-validation-for="Headline" class="error-message"></span>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="form-field">
+                            <label asp-for="NewsContent">Content</label>
+                            <textarea asp-for="NewsContent" class="input-control content-area" rows="8"></textarea>
+                            <span asp-validation-for="NewsContent" class="error-message"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel -->
+                <div class="panel metadata-panel">
+                    <!-- Publication Details -->
+                    <div class="panel-section">
+                        <div class="panel-header">
+                            <span class="header-icon">
+                                <i class="fas fa-cog"></i>
+                            </span>
+                            <h3>Publication Details</h3>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <!-- Source -->
+                            <div class="form-field">
+                                <label asp-for="NewsSource">Source</label>
+                                <input asp-for="NewsSource" class="input-control" />
+                            </div>
+                            
+                            <!-- Category -->
+                            <div class="form-field">
+                                <label asp-for="CategoryId">Category</label>
+                                <select asp-for="CategoryId" class="input-control">
+                                    <option value="">-- Select Category --</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category.CategoryId" selected="@(Model.CategoryId == category.CategoryId)">@category.CategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="form-field">
+                                <label asp-for="NewsStatus">Status</label>
+                                <select asp-for="NewsStatus" class="input-control">
+                                    <option value="true" selected="@(Model.NewsStatus == true)">Published</option>
+                                    <option value="false" selected="@(Model.NewsStatus == false)">Draft</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tags -->
+                    <div class="panel-section">
+                        <div class="panel-header">
+                            <span class="header-icon">
+                                <i class="fas fa-tags"></i>
+                            </span>
+                            <h3>Tags</h3>
+                        </div>
+                        
+                        <div class="panel-body">
+                            <div class="tags-grid">
+                                @foreach (var tag in ViewBag.Tags)
+                                {
+                                    <div class="tag-option">
+                                        <input class="tag-input" type="checkbox" id="tag-@tag.TagId" name="selectedTags" value="@tag.TagId"
+                                        @(Model.Tags.Any(t => t.TagId == tag.TagId) ? "checked" : "")>
+                                        <label class="tag-name" for="tag-@tag.TagId">@tag.TagName</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="action-button save-button">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <a asp-action="NewsMangement" class="action-button cancel-button">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+/* Edit News Article Specific Styles */
+.edit-article-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.edit-header {
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 10px;
+    color: white;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.edit-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M100 50L75 33.3V66.7L100 50zM0 50L25 66.7V33.3L0 50z" fill="%23ffffff" opacity="0.1"/></svg>');
+    opacity: 0.1;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.edit-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.edit-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Form Container */
+.edit-form-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+}
+
+/* Panel Layout */
+.form-panels {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+/* Panel Styling */
+.panel {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    border: 1px solid #e9ecef;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.header-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #6a11cb;
+    color: white;
+    border-radius: 50%;
+    margin-right: 0.8rem;
+}
+
+.panel-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    color: #343a40;
+}
+
+.panel-body {
+    padding: 1.5rem;
+}
+
+.panel-section {
+    margin-bottom: 1.5rem;
+}
+
+.panel-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Content Panel */
+.content-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-area {
+    min-height: 250px;
+    resize: vertical;
+}
+
+/* Form Fields */
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+.required-field {
+    color: #dc3545;
+}
+
+.input-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.input-control:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.15);
+    outline: none;
+}
+
+/* Tags */
+.tags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+}
+
+.tag-option {
+    position: relative;
+}
+
+.tag-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tag-name {
+    display: block;
+    padding: 0.6rem 1rem;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tag-input:checked + .tag-name {
+    background: #6a11cb;
+    color: white;
+    border-color: #6a11cb;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.action-button {
+    padding: 0.8rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.save-button {
+    background: #6a11cb;
+    color: white;
+    border: none;
+}
+
+.save-button:hover {
+    background: #5a0db0;
+    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+}
+
+.cancel-button {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+
+.cancel-button:hover {
+    background: #e9ecef;
+}
+
+/* Error Messages */
+.error-message {
+    display: block;
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+</style>

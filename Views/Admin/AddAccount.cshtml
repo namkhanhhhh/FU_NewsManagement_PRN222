@@ -1,0 +1,180 @@
+﻿    @model AS1_HE180034_PRN222.Models.SystemAccount
+@{
+    ViewData["Title"] = "Add Account";
+}
+
+<head>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --success: #10B981;
+            --background: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --border-color: #E5E7EB;
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 2rem;
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .text-danger {
+            color: #DC2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .button-container {
+            margin-top: 2rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+            .btn-success:hover {
+                background: #059669;
+                transform: translateY(-1px);
+            }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+        }
+
+            .btn-back:hover {
+                background: var(--background);
+                transform: translateY(-1px);
+            }
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">Add New Account</h2>
+            <div class="divider"></div>
+
+            <form asp-action="AddAccount" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label asp-for="AccountName" class="form-label">Account Name</label>
+                    <input asp-for="AccountName" class="form-control" placeholder="Enter account name" />
+                    <span asp-validation-for="AccountName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AccountEmail" class="form-label">Email Address</label>
+                    <input asp-for="AccountEmail" class="form-control" placeholder="Enter email address" />
+                    <span asp-validation-for="AccountEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AccountRole" class="form-label">Role</label>
+                    <select asp-for="AccountRole" class="form-select">
+                        <option value="">-- Select Role --</option>
+                        <option value="1">Staff</option>
+                        <option value="2">Lecturer</option>
+                    </select>
+                    <span asp-validation-for="AccountRole" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AccountPassword" class="form-label">Password</label>
+                    <input asp-for="AccountPassword" type="password" class="form-control" placeholder="Enter password" />
+                    <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="btn btn-success">Create Account</button>
+                    <a asp-action="AccountManagement" class="btn btn-back">Back to Management</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>

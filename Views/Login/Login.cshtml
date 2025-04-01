@@ -1,0 +1,176 @@
+﻿@model AS1_HE180034_PRN222.Models.SystemAccount
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    :root {
+        --primary-color: #4F46E5;
+        --primary-hover: #4338CA;
+        --background: #F3F4F6;
+        --card-bg: #FFFFFF;
+        --text-primary: #111827;
+        --text-secondary: #6B7280;
+    }
+
+
+    .container {
+        width: 100%;
+        padding: 2rem;
+        max-width: 460px;
+    }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        padding: 2.5rem;
+    }
+
+        .card h2 {
+            color: var(--text-primary);
+            font-size: 1.875rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+    .alert {
+        background: #FEE2E2;
+        color: #991B1B;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border: 1px solid #E5E7EB;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: all 0.2s;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+    .text-danger {
+        color: #DC2626;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.875rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s;
+    }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+    .forgot-password {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+            .forgot-password a:hover {
+                text-decoration: underline;
+            }
+</style>
+    <div class="container">
+        <div class="card">
+            <h2>Welcome back</h2>
+
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="form-label">Email address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-group-icon"></i>
+                        <input type="email" asp-for="AccountEmail" class="form-control" placeholder="name@company.com">
+                    </div>
+                    <span class="text-danger" asp-validation-for="AccountEmail"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-group-icon"></i>
+                        <input type="password" asp-for="AccountPassword" class="form-control" placeholder="••••••••">
+                    </div>
+                    <span class="text-danger" asp-validation-for="AccountPassword"></span>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign in to your account
+                </button>
+            </form>
+
+            <div class="forgot-password">
+                <a href="#">Forgot your password?</a>
+            </div>
+        </div>
+    </div>

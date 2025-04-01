@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Controllers",
+    "\\Models",
+    "\\Views",
+    "\\Views\\NewsArticle",
+    "\\Views\\Shared",
+    "\\Views\\Staff"
+  ],
+  "SelectedNode": "\\Views\\Staff\\AddCategory.cshtml",
+  "PreviewInSolutionExplorer": false
+}

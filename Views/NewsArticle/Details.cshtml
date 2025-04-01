@@ -1,0 +1,25 @@
+﻿@model AS1_HE180034_PRN222.Models.NewsArticle
+
+@{
+    ViewData["Title"] = "News Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">News Details</h3>
+        </div>
+        <div class="card-body">
+            <h4 class="text-dark">@Model.NewsTitle</h4>
+            <p class="text-muted">@Model.Headline</p>
+            <hr>
+            <p><strong>Content:</strong></p>
+            <p>@Model.NewsContent</p>
+            <p><strong>Source:</strong> @Model.NewsSource</p>
+            <p><strong>Created Date:</strong> @Model.CreatedDate?.ToString("dd/MM/yyyy")</p>
+        </div>
+        <div class="card-footer">
+            <a asp-action="NewsArticleView" class="btn btn-secondary">Back to News</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,328 @@
+﻿@model AS1_HE180034_PRN222.Models.NewsArticle
+@{
+    ViewData["Title"] = "Add New Article";
+}
+
+<div class="add-article-container">
+    <div class="form-banner">
+        <h2>Add New Article</h2>
+        <p>Create a new news article for publication</p>
+    </div>
+
+    <form asp-action="AddNewsArticleList" method="post">
+        <div class="form-layout">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>Basic Information</h3>
+                </div>
+
+                <div class="input-row">
+                    <!-- Title -->
+                    <div class="input-group">
+                        <label asp-for="NewsTitle">Title <span class="required">*</span></label>
+                        <input asp-for="NewsTitle" class="form-input" required />
+                        <span asp-validation-for="NewsTitle" class="validation-error"></span>
+                    </div>
+
+                    <!-- Headline -->
+                    <div class="input-group">
+                        <label asp-for="Headline">Headline <span class="required">*</span></label>
+                        <input asp-for="Headline" class="form-input" required />
+                        <span asp-validation-for="Headline" class="validation-error"></span>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="input-group full-width">
+                    <label asp-for="NewsContent">Content</label>
+                    <textarea asp-for="NewsContent" class="form-textarea" rows="5"></textarea>
+                    <span asp-validation-for="NewsContent" class="validation-error"></span>
+                </div>
+            </div>
+
+            <!-- Classification Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-tag"></i>
+                    <h3>Classification</h3>
+                </div>
+
+                <div class="input-row">
+                    <!-- Source -->
+                    <div class="input-group">
+                        <label asp-for="NewsSource">Source</label>
+                        <input asp-for="NewsSource" class="form-input" />
+                    </div>
+
+                    <!-- Category -->
+                    <div class="input-group">
+                        <label asp-for="CategoryId">Category</label>
+                        <select asp-for="CategoryId" class="form-select">
+                            <option value="">-- Select Category --</option>
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="input-group">
+                    <label asp-for="NewsStatus">Status</label>
+                    <select asp-for="NewsStatus" class="form-select">
+                        <option value="true">Published</option>
+                        <option value="false">Draft</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tags Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-tags"></i>
+                    <h3>Tags</h3>
+                </div>
+
+                <div class="tags-container">
+                    @if (ViewBag.Tags != null)
+                    {
+                        foreach (var tag in ViewBag.Tags)
+                        {
+                            <div class="tag-item">
+                                <input class="tag-checkbox" type="checkbox" id="tag-@tag.TagId" name="selectedTags" value="@tag.TagId"
+                                @(Model != null && Model.Tags != null && Model.Tags.Any(t => t.TagId == tag.TagId) ? "checked" : "")>
+                                <label class="tag-label" for="tag-@tag.TagId">@tag.TagName</label>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="no-data-message">No tags available.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i> Save Article
+            </button>
+            <a asp-action="NewsMangement" class="btn-cancel">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Add News Article Specific Styles */
+    .add-article-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+    }
+
+    /* Banner */
+    .form-banner {
+        background: linear-gradient(135deg, #3498db, #1abc9c);
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+        .form-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-banner p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+    /* Form Layout */
+    .form-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    /* Section Styling */
+    .form-section {
+        background-color: #f8fafc;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        border-left: 4px solid #3498db;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+        .section-header i {
+            font-size: 1.2rem;
+            color: #3498db;
+            margin-right: 0.8rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin: 0;
+        }
+
+    /* Input Layout */
+    .input-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+        flex: 1;
+        min-width: 250px;
+    }
+
+        .input-group.full-width {
+            flex-basis: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Elements */
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+    .required {
+        color: #e53e3e;
+        margin-left: 2px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+            outline: none;
+        }
+
+    .form-textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Tags */
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    .tag-item {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .tag-checkbox {
+        display: none;
+    }
+
+    .tag-label {
+        display: inline-block;
+        background-color: #edf2f7;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #4a5568;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid #e2e8f0;
+    }
+
+    .tag-checkbox:checked + .tag-label {
+        background-color: #3498db;
+        color: white;
+        border-color: #3498db;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: flex-end;
+    }
+
+    .btn-save, .btn-cancel {
+        padding: 0.8rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-save {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background-color: #2980b9;
+        }
+
+    .btn-cancel {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e0;
+    }
+
+        .btn-cancel:hover {
+            background-color: #e2e8f0;
+        }
+
+    /* Validation */
+    .validation-error {
+        display: block;
+        color: #e53e3e;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+
+    /* No Data Message */
+    .no-data-message {
+        color: #e53e3e;
+        font-style: italic;
+    }
+</style>

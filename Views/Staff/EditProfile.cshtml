@@ -1,0 +1,179 @@
+﻿@model AS1_HE180034_PRN222.Models.SystemAccount
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin cá nhân";
+}
+
+<style>
+    .container {
+    margin-top: 3rem !important;
+}
+
+.card {
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    background: linear-gradient(90deg, #1a3a8f 0%, #2c62d6 100%) !important;
+    color: white !important;
+    border-bottom: none !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.5rem !important;
+}
+
+.card-header h3 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+}
+
+.card-header i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.card-body {
+    padding: 2rem !important;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #424f66;
+    margin-bottom: 0.5rem;
+}
+
+.form-label i {
+    width: 24px;
+    color: #2c62d6;
+    margin-right: 5px;
+}
+
+.form-control {
+    border: 1px solid #e0e6ed !important;
+    border-radius: 8px !important;
+    padding: 0.7rem 1rem !important;
+    transition: all 0.3s;
+    background-color: #f9fafc;
+}
+
+.form-control:focus {
+    border-color: #2c62d6 !important;
+    box-shadow: 0 0 0 3px rgba(44, 98, 214, 0.15) !important;
+    background-color: #ffffff;
+}
+
+.form-control:disabled {
+    background-color: #f0f3f9 !important;
+    color: #6c757d;
+    border: 1px solid #dee2e6 !important;
+}
+
+.text-danger {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.btn {
+    padding: 0.7rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.3px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #1a3a8f 0%, #2c62d6 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(44, 98, 214, 0.2);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #1a3a8f 30%, #2c62d6 100%) !important;
+    box-shadow: 0 6px 15px rgba(44, 98, 214, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+    color: #5a6a85 !important;
+    border-color: #d0d9e6 !important;
+    background-color: white !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa !important;
+    color: #424f66 !important;
+}
+
+.btn i {
+    margin-right: 8px;
+}
+
+.d-grid {
+    gap: 0.75rem !important;
+}
+
+/* Hiệu ứng nhẹ nhàng khi load trang */
+
+.card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0"><i class="fas fa-user-edit"></i> Edit Information</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="EditProfile" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="AccountId" />
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-user"></i>User Name</label>
+                            <input asp-for="AccountName" class="form-control" placeholder="Enter User Name" />
+                            <span asp-validation-for="AccountName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                            <input asp-for="AccountEmail" class="form-control" placeholder="Enter email" />
+                            <span asp-validation-for="AccountEmail" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-user-tag"></i> Role </label>
+                            <input type="text" class="form-control" value="@(Model.AccountRole == 1 ? "Staff" : "Lecturer")" disabled />
+                            <input type="hidden" asp-for="AccountRole" />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Change
+                            </button>
+                            <a asp-action="Profile" class="btn btn-outline-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+}
